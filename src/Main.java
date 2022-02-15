@@ -8,18 +8,16 @@ public class Main {
 
          List<Question> questions= createQuestion();
         System.out.println("Lista de preguntas" );
-        showQuestions(questions);
-        int contCorrect = answerQuestions(questions);
+        int contCorrect = showQuestions(questions);
         System.out.println("The number of questions answered correctly are: "+contCorrect);
     }
 
-    private static int answerQuestions(List<Question> questions) {
-        int contCorrect=0;
-        for (Question currentQuestion:questions) {
+    private static int answerQuestions(Question currentQuestion,int contCorrect) {
+
             if(currentQuestion.isTrue()==writeAnswer()){
                 contCorrect++;
             }
-        }
+
         return contCorrect;
     }
 
@@ -28,10 +26,13 @@ public class Main {
         return (new Scanner(System.in).nextLine()).equalsIgnoreCase("S");
     }
 
-    private static void showQuestions(List<Question> questions) {
+    private static int showQuestions(List<Question> questions) {
+        int contCorrect=0;
         for (Question currentQuestion:questions) {
             System.out.println(currentQuestion);
+            contCorrect = answerQuestions(currentQuestion,contCorrect);
         }
+        return contCorrect;
     }
 
     private static List<Question> createQuestion() {
