@@ -10,6 +10,7 @@ public class Main {
         System.out.println("Lista de preguntas" );
         showQuestions(questions);
         int contCorrect = answerQuestions(questions);
+        System.out.println("The number of questions answered correctly are: "+contCorrect);
     }
 
     private static int answerQuestions(List<Question> questions) {
@@ -23,6 +24,7 @@ public class Main {
     }
 
     private static boolean writeAnswer() {
+        System.out.println("Is true or false?");
         return (new Scanner(System.in).nextLine()).equalsIgnoreCase("S");
     }
 

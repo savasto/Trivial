@@ -10,9 +10,7 @@ public class Question {
     @Override
     public String toString() {
         return "Question{" +
-                "question='" + question + '\'' +
-                ", isTrue=" + isTrue +
-                '}';
+                "question='" + question + '\'';
     }
 
     public String getQuestion() {
