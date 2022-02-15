@@ -8,17 +8,51 @@ public class Main {
 
          List<Question> questions= createQuestion();
         System.out.println("Lista de preguntas" );
-        int contCorrect = showQuestions(questions);
-        System.out.println("The number of questions answered correctly are: "+contCorrect);
+        List<Boolean> answerIsCorrect = showQuestions(questions);
+        int numberCorrectAnswer = getContCorrect(answerIsCorrect);
+        int score = getScoreCorrectAnswer(answerIsCorrect,questions);
+
+        System.out.println("The number of questions answered correctly are: "+numberCorrectAnswer+
+                " the final score is: " + score );
     }
 
-    private static int answerQuestions(Question currentQuestion,int contCorrect) {
+    private static int getScoreCorrectAnswer(List<Boolean> answerIsCorrect, List<Question> questions) {
 
-            if(currentQuestion.isTrue()==writeAnswer()){
-                contCorrect++;
+        int score=0;
+        for(int sizeLimit= answerIsCorrect.size(), cont=0 ;cont < sizeLimit;cont++){
+            if(answerIsCorrect.get(cont)){
+                score += questions.get(cont).getScore();
+            }
+        }
+        return score;
+    }
+
+
+    private static int getContCorrect(List<Boolean> answerIsCorrect) {
+        int numberCorrectAnswer=0;
+        for (Boolean currentIsTrue:answerIsCorrect) {
+            if (currentIsTrue){
+                numberCorrectAnswer++;
             }
 
-        return contCorrect;
+        }
+        return numberCorrectAnswer;
+    }
+
+    private static List<Boolean> answerQuestions(Question currentQuestion) {
+
+        List<Boolean> answerIsCorrect = new ArrayList<>();
+            if(currentQuestion.isTrue()==writeAnswer()){
+                System.out.println("You got the right answer");
+                answerIsCorrect.add(true);
+
+            }
+            else{
+                System.out.println("You got the incorrect answer");
+                answerIsCorrect.add(false);
+            }
+
+        return answerIsCorrect;
     }
 
     private static boolean writeAnswer() {
@@ -26,23 +60,25 @@ public class Main {
         return (new Scanner(System.in).nextLine()).equalsIgnoreCase("S");
     }
 
-    private static int showQuestions(List<Question> questions) {
-        int contCorrect=0;
+    private static List<Boolean> showQuestions(List<Question> questions) {
+
+
+        List<Boolean> answerIsCorrect = null;
         for (Question currentQuestion:questions) {
             System.out.println(currentQuestion);
-            contCorrect = answerQuestions(currentQuestion,contCorrect);
+             answerIsCorrect = answerQuestions(currentQuestion);
         }
-        return contCorrect;
+        return answerIsCorrect;
     }
 
     private static List<Question> createQuestion() {
 
         List<Question> questions = new ArrayList<>();
-            questions.add(new Question("La capital de Mexico es Ciudad de Mexico?", true));
-            questions.add(new Question("La capital de Noruega es Oslo?", true));
-            questions.add(new Question("La capital de Polonia de Varsovia?", true));
-            questions.add(new Question("La capital de Alemania es Bonn?", false));
-            questions.add(new Question("La capital de Francia es Paris?", true));
+            questions.add(new Question("La capital de Mexico es Ciudad de Mexico?", true,2));
+            questions.add(new Question("La capital de Noruega es Oslo?", true,2));
+            questions.add(new Question("La capital de Polonia de Varsovia?", true,2));
+            questions.add(new Question("La capital de Alemania es Bonn?", false,2));
+            questions.add(new Question("La capital de Francia es Paris?", true,2));
             return questions;
     }
 

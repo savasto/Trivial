@@ -1,16 +1,19 @@
 public class Question {
     private String question;
     private boolean isTrue;
+    private int score;
 
-    public Question(String question, boolean isTrue) {
+
+    public Question(String question, boolean isTrue, int score) {
         this.question = question;
         this.isTrue = isTrue;
+        this.score = score;
     }
 
     @Override
     public String toString() {
         return "Question  " +
-                "" + question + '\'';
+                "" + question + " score by question "+ score  +'\'' ;
     }
 
     public String getQuestion() {
@@ -27,6 +30,14 @@ public class Question {
 
     public void setTrue(boolean aTrue) {
         isTrue = aTrue;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
 
