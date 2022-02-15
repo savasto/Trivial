@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-	List<Question> questions = new ArrayList<>();
-        questions =  createQuestion(questions);
+
+         List<Question> questions= createQuestion();
         System.out.println("Lista de preguntas" );
         showQuestions(questions);
         int contCorrect = answerQuestions(questions);
@@ -34,9 +34,9 @@ public class Main {
         }
     }
 
-    private static List<Question> createQuestion(List<Question>questions) {
+    private static List<Question> createQuestion() {
 
-
+        List<Question> questions = new ArrayList<>();
             questions.add(new Question("La capital de Mexico es Ciudad de Mexico?", true));
             questions.add(new Question("La capital de Noruega es Oslo?", true));
             questions.add(new Question("La capital de Polonia de Varsovia?", true));
