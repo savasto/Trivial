@@ -39,20 +39,17 @@ public class Main {
         return numberCorrectAnswer;
     }
 
-    private static List<Boolean> answerQuestions(Question currentQuestion) {
+    private static boolean answerQuestions(Question currentQuestion) {
 
-        List<Boolean> answerIsCorrect = new ArrayList<>();
             if(currentQuestion.isTrue()==writeAnswer()){
                 System.out.println("You got the right answer");
-                answerIsCorrect.add(true);
+                return true;
 
             }
             else{
                 System.out.println("You got the incorrect answer");
-                answerIsCorrect.add(false);
+                return false;
             }
-
-        return answerIsCorrect;
     }
 
     private static boolean writeAnswer() {
@@ -63,10 +60,10 @@ public class Main {
     private static List<Boolean> showQuestions(List<Question> questions) {
 
 
-        List<Boolean> answerIsCorrect = null;
+        List<Boolean> answerIsCorrect = new ArrayList<>();
         for (Question currentQuestion:questions) {
             System.out.println(currentQuestion);
-             answerIsCorrect = answerQuestions(currentQuestion);
+             answerIsCorrect.add(answerQuestions(currentQuestion));
         }
         return answerIsCorrect;
     }
