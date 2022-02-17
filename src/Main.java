@@ -1,53 +1,89 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
+    private static final int MAX_SCORE = 10;
 
     public static void main(String[] args) {
 
+
+        Score score = new Score();
+
+        Map<String, List<Question>> mapQuestion = createHashMap();
+        while (score.getScore() <= MAX_SCORE && !mapQuestion.isEmpty()) {
+            List<Question> questionsInCategory = chooseCategory(mapQuestion);
+
+            answerQuestions(questionsInCategory, score);
+
+            mapQuestion.remove(questionsInCategory.get(0).getCategory());
+        }
+        showScore(score);
+    }
+
+    private static void showScore(Score score) {
+        System.out.println(score);
+    }
+
+    private static Map<String, List<Question>> createHashMap() {
         List<Question> questions = createQuestion();
-        System.out.println("Lista de preguntas");
-        List<Boolean> answerIsCorrect = showQuestions(questions);
-        // int numberCorrectAnswer = getContCorrect(answerIsCorrect);
-        // int score = getScoreCorrectAnswer(answerIsCorrect,questions);
+        List<Question> listQuestionGeography = createListCategory(questions, "Geography");
+        List<Question> listQuestionAstronomy = createListCategory(questions, "Astronomy");
 
-        System.out.println("The number of questions answered correctly are: " + getContCorrect(answerIsCorrect) +
-                " the final score is: " + getScoreCorrectAnswer(answerIsCorrect, questions));
+
+        return insertInHashMap(listQuestionGeography, listQuestionAstronomy);
     }
 
-    private static int getScoreCorrectAnswer(List<Boolean> answerIsCorrect, List<Question> questions) {
+    private static List<Question> chooseCategory(Map<String, List<Question>> mapQuestion) {
+        System.out.println("Choose category");
+        List<Question> questions = new ArrayList<>();
 
-        int score = 0;
-        for (int sizeLimit = answerIsCorrect.size(), cont = 0; cont < sizeLimit; cont++) {
-            if (answerIsCorrect.get(cont)) {
-                score += questions.get(cont).getScore();
+        System.out.println("1- Geography");
+        System.out.println("2- Astronomy");
+
+        do {
+            int choose = new Scanner(System.in).nextInt();
+            switch (choose) {
+                case 1 -> questions = mapQuestion.get("Geography");
+                case 2 ->
+                    questions = mapQuestion.get("Astronomy");
+
+            }
+            if (questions == null) {
+                System.out.println("Don't have elements");
             }
         }
-        return score;
+        while (questions == null);
+        return questions;
     }
 
-
-    private static int getContCorrect(List<Boolean> answerIsCorrect) {
-        int numberCorrectAnswer = 0;
-        for (Boolean currentIsTrue : answerIsCorrect) {
-            if (currentIsTrue) {
-                numberCorrectAnswer++;
+    private static List<Question> createListCategory(List<Question> questions, String category) {
+        List<Question> listQuestionGeography = new ArrayList<>();
+        for (Question currentQuestion : questions) {
+            if (currentQuestion.getCategory().equalsIgnoreCase(category)) {
+                listQuestionGeography.add(currentQuestion);
             }
-
         }
-        return numberCorrectAnswer;
+        return listQuestionGeography;
     }
 
-    private static boolean answerQuestions(Question currentQuestion) {
+    private static Map<String, List<Question>> insertInHashMap(List<Question> listQuestionGeography, List<Question> listQuestionAstronomy) {
+        Map<String, List<Question>> mapQuestion = new HashMap<>();
+        mapQuestion.put("Geography", listQuestionGeography);
+        mapQuestion.put("Astronomy", listQuestionAstronomy);
+        return mapQuestion;
+    }
+
+
+
+
+    private static void answeringQuestions(Question currentQuestion, Score score) {
 
         if (currentQuestion.isTrue() == writeAnswer()) {
             System.out.println("You got the right answer");
-            return true;
+            score.setScore(currentQuestion.getScore());
+            score.setCountAnswerCorrect(1);
 
         } else {
             System.out.println("You got the incorrect answer");
-            return false;
         }
     }
 
@@ -56,25 +92,23 @@ public class Main {
         return (new Scanner(System.in).nextLine()).equalsIgnoreCase("S");
     }
 
-    private static List<Boolean> showQuestions(List<Question> questions) {
+    private static void answerQuestions(List<Question> questions, Score scoreIsCorrect) {
 
 
-        List<Boolean> answerIsCorrect = new ArrayList<>();
         for (Question currentQuestion : questions) {
             System.out.println(currentQuestion);
-            answerIsCorrect.add(answerQuestions(currentQuestion));
+            answeringQuestions(currentQuestion, scoreIsCorrect);
         }
-        return answerIsCorrect;
     }
 
     private static List<Question> createQuestion() {
 
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("La capital de Mexico es Ciudad de Mexico?", true, 2));
-        questions.add(new Question("La capital de Noruega es Oslo?", true, 2));
-        questions.add(new Question("La capital de Polonia de Varsovia?", true, 2));
-        questions.add(new Question("La capital de Alemania es Bonn?", false, 2));
-        questions.add(new Question("La capital de Francia es Paris?", true, 2));
+        questions.add(new Question("La capital de Mexico es Ciudad de Mexico?", true, 2, "Geography"));
+        questions.add(new Question("La capital de Noruega es Oslo?", true, 2, "Geography"));
+        questions.add(new Question("La capital de Polonia de Varsovia?", true, 2, "Geography"));
+        questions.add(new Question("Segundo planeta del Sistema solar es Venus", true, 1, "Astronomy"));
+        questions.add(new Question("Marte es el cuarto planeta del Sistema Solar", true, 1, "Astronomy"));
         return questions;
     }
 

@@ -2,18 +2,20 @@ public class Question {
     private String question;
     private boolean isTrue;
     private int score;
+    private String category;
 
 
-    public Question(String question, boolean isTrue, int score) {
+    public Question(String question, boolean isTrue, int score, String category) {
         this.question = question;
         this.isTrue = isTrue;
         this.score = score;
+        this.category=category;
     }
 
     @Override
     public String toString() {
         return "Question  " +
-                "" + question + " score by question "+ score  +'\'' ;
+                "" + question + " (score by question = "+ score  +'\'' ;
     }
 
     public String getQuestion() {
@@ -40,5 +42,7 @@ public class Question {
         this.score = score;
     }
 
-
+    public String getCategory() {
+        return category;
+    }
 }
