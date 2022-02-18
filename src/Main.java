@@ -40,11 +40,27 @@ public class Main {
     private static Map<String, List<Question>> initAllQuestions() {
 
         List<Question> questions = createQuestion();
-        List<Question> listQuestionGeography = createListCategory(questions, "Geography");
-        List<Question> listQuestionAstronomy = createListCategory(questions, "Astronomy");
+        Map<String, List<Question>>  listOfQuestions = new HashMap<>();
+        for (Question currentQueslistOfQuestionstion: questions) {
 
+            if(listOfQuestions.isEmpty()){
+                listOfQuestions.put(currentQueslistOfQuestionstion.getCategory(), insertListInHashMap(questions,currentQueslistOfQuestionstion.getCategory()));
+            }
+            if(!listOfQuestions.containsKey(currentQueslistOfQuestionstion.getCategory()))
+                listOfQuestions.put(currentQueslistOfQuestionstion.getCategory(), insertListInHashMap(questions,currentQueslistOfQuestionstion.getCategory()));
+        }
 
-        return insertInHashMap(listQuestionGeography, listQuestionAstronomy);
+        return listOfQuestions;
+    }
+
+    private static List<Question> insertListInHashMap(List<Question> questions, String category) {
+        List<Question> questionFromCategory = new ArrayList<>();
+        for (Question currentQuestion:questions  ) {
+                if (currentQuestion.getCategory().equalsIgnoreCase(category)){
+                    questionFromCategory.add(currentQuestion);
+                }
+        }
+        return questionFromCategory;
     }
 
     private static List<Question> chooseCategory(Map<String, List<Question>> mapQuestion) throws NullPointerException {
@@ -83,12 +99,12 @@ public class Main {
         return listQuestionGeography;
     }
 
-    private static Map<String, List<Question>> insertInHashMap(List<Question> listQuestionGeography, List<Question> listQuestionAstronomy) {
+    /*private static Map<String, List<Question>> insertInHashMap(List<Question> listQuestionGeography, String category) {
         Map<String, List<Question>> mapQuestion = new HashMap<>();
         mapQuestion.put("Geography", listQuestionGeography);
-        mapQuestion.put("Astronomy", listQuestionAstronomy);
+
         return mapQuestion;
-    }
+    }*/
 
 
     private static void answeringQuestions(Question currentQuestion, Score score) {
