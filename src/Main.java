@@ -8,22 +8,37 @@ public class Main {
 
         Score score = new Score();
 
-        Map<String, List<Question>> mapQuestion = createHashMap();
-        while (score.getScore() <= MAX_SCORE && !mapQuestion.isEmpty()) {
-            List<Question> questionsInCategory = chooseCategory(mapQuestion);
+        Map<String, List<Question>> mapQuestion = initAllQuestions();
+        while (!hasWon(score) && !mapQuestion.isEmpty()) {
+            try {
+                List<Question> questionsInCategory = chooseCategory(mapQuestion);
 
-            answerQuestions(questionsInCategory, score);
+                answerQuestions(questionsInCategory, score);
 
-            mapQuestion.remove(questionsInCategory.get(0).getCategory());
+                removeQuestionFromCategory(mapQuestion, questionsInCategory);
+            } catch (NullPointerException e) {
+                System.out.println(e.getMessage());
+            } catch (InputMismatchException e) {
+                System.out.println("You have to put a number!");
+            }
         }
         showScore(score);
+    }
+
+    private static void removeQuestionFromCategory(Map<String, List<Question>> mapQuestion, List<Question> questionsInCategory) {
+        mapQuestion.remove(questionsInCategory.get(0).getCategory());
+    }
+
+    private static boolean hasWon(Score score) {
+        return score.getScore() >= MAX_SCORE;
     }
 
     private static void showScore(Score score) {
         System.out.println(score);
     }
 
-    private static Map<String, List<Question>> createHashMap() {
+    private static Map<String, List<Question>> initAllQuestions() {
+
         List<Question> questions = createQuestion();
         List<Question> listQuestionGeography = createListCategory(questions, "Geography");
         List<Question> listQuestionAstronomy = createListCategory(questions, "Astronomy");
@@ -32,26 +47,29 @@ public class Main {
         return insertInHashMap(listQuestionGeography, listQuestionAstronomy);
     }
 
-    private static List<Question> chooseCategory(Map<String, List<Question>> mapQuestion) {
+    private static List<Question> chooseCategory(Map<String, List<Question>> mapQuestion) throws NullPointerException {
         System.out.println("Choose category");
         List<Question> questions = new ArrayList<>();
 
         System.out.println("1- Geography");
         System.out.println("2- Astronomy");
 
-        do {
+
+
+
             int choose = new Scanner(System.in).nextInt();
             switch (choose) {
+
                 case 1 -> questions = mapQuestion.get("Geography");
-                case 2 ->
-                    questions = mapQuestion.get("Astronomy");
+                case 2 -> questions = mapQuestion.get("Astronomy");
+
 
             }
+
             if (questions == null) {
-                System.out.println("Don't have elements");
+                throw new NullPointerException("Don't have questions");//   System.out.println("Don't have elements");
             }
-        }
-        while (questions == null);
+
         return questions;
     }
 
@@ -71,8 +89,6 @@ public class Main {
         mapQuestion.put("Astronomy", listQuestionAstronomy);
         return mapQuestion;
     }
-
-
 
 
     private static void answeringQuestions(Question currentQuestion, Score score) {
