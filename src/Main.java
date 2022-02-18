@@ -7,22 +7,23 @@ public class Main {
 
 
         Score score = new Score();
-
+        double numberOfQuestions = 0;
         Map<String, List<Question>> mapQuestion = initAllQuestions();
         while (!hasWon(score) && !mapQuestion.isEmpty()) {
             try {
                 List<Question> questionsInCategory = chooseCategory(mapQuestion);
-
+                numberOfQuestions += questionsInCategory.size();
+                removeQuestionFromCategory(mapQuestion, questionsInCategory);
                 answerQuestions(questionsInCategory, score);
 
-                removeQuestionFromCategory(mapQuestion, questionsInCategory);
+
             } catch (NullPointerException e) {
                 System.out.println(e.getMessage());
             } catch (InputMismatchException e) {
                 System.out.println("You have to put a number!");
             }
         }
-        showScore(score);
+        showScore(score,numberOfQuestions);
     }
 
     private static void removeQuestionFromCategory(Map<String, List<Question>> mapQuestion, List<Question> questionsInCategory) {
@@ -33,8 +34,8 @@ public class Main {
         return score.getScore() >= MAX_SCORE;
     }
 
-    private static void showScore(Score score) {
-        System.out.println(score);
+    private static void showScore(Score score,double numberOfQuestions) {
+        System.out.println(score+" This is the stadistic of correct answers: "+ score.calculateStadistic(numberOfQuestions)+" %");
     }
 
     private static Map<String, List<Question>> initAllQuestions() {
@@ -127,9 +128,11 @@ public class Main {
     private static void answerQuestions(List<Question> questions, Score scoreIsCorrect) {
 
 
-        for (Question currentQuestion : questions) {
-            System.out.println(currentQuestion);
-            answeringQuestions(currentQuestion, scoreIsCorrect);
+        for (int i = 0; i<questions.size();) {
+            Question currentRandomQuestion = questions.get(new Random().nextInt(questions.size()));
+            System.out.println(currentRandomQuestion);
+            answeringQuestions(currentRandomQuestion, scoreIsCorrect);
+            questions.remove(currentRandomQuestion);
         }
     }
 

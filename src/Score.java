@@ -1,5 +1,5 @@
 public class Score {
-    private int countAnswerCorrect;
+    private double countAnswerCorrect;
     private int score;
 
     public Score() {
@@ -7,11 +7,11 @@ public class Score {
         this.score = 0;
     }
 
-    public int getCountAnswerCorrect() {
+    public double getCountAnswerCorrect() {
         return countAnswerCorrect;
     }
 
-    public void setCountAnswerCorrect(int countAnswerCorrect) {
+    public void setCountAnswerCorrect(double countAnswerCorrect) {
         this.countAnswerCorrect += countAnswerCorrect;
     }
 
@@ -22,7 +22,9 @@ public class Score {
     public void setScore(int score) {
         this.score += score;
     }
-
+    public double calculateStadistic(double numberOfQuestions){
+        return (this.countAnswerCorrect/numberOfQuestions)*100;
+    }
     @Override
     public String toString() {
         return  "The number of questions answered correctly are: " + this.countAnswerCorrect +
